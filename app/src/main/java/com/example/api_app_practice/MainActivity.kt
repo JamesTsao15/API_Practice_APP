@@ -6,15 +6,23 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
 class MainActivity : AppCompatActivity() {
     private lateinit var btn_query: Button
     private fun showListdialog(airData: AirData){
-        val item= arrayOfNulls<String>(airData.records.size)
+        val items= arrayOfNulls<String>(airData.records.size)
         airData.records.forEachIndexed { index, record ->
-           Log.e("JAMES","地區:${record.sitename},狀態:${record.status}")
+            items[index]="地區:${record.sitename},狀態:${record.status}"
+        }
+        runOnUiThread {
+            btn_query.isEnabled=true
+            AlertDialog.Builder(this)
+                .setTitle("全台空氣品質")
+                .setItems(items,null)
+                .show()
         }
     }
     private fun sendRequest(){
@@ -30,6 +38,9 @@ class MainActivity : AppCompatActivity() {
                 {
 //                    Log.e("JAMES",json_delete_first_block)
                     val airData=Gson().fromJson(json_delete_first_block,AirData::class.java)
+                    runOnUiThread {
+                        btn_query.isEnabled=false
+                    }
 //                    Log.e("JAMES",airData.records.size.toString())
                     showListdialog(airData)
                 }
