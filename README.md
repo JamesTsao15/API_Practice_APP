@@ -1,5 +1,7 @@
 # API_Practice_App
 
+此為簡義查詢空氣品質APP，練習介接API
+
 遇到問題1:
 
 接API資料值進不去:
